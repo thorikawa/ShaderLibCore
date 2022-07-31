@@ -20,22 +20,22 @@
 //               https://github.com/ashima/webgl-noise
 //
 
-float3 mod289(float3 x)
+float3 simplex_noise_grad3d_mod289(float3 x)
 {
     return x - floor(x / 289.0) * 289.0;
 }
 
-float4 mod289(float4 x)
+float4 simplex_noise_grad3d_mod289(float4 x)
 {
     return x - floor(x / 289.0) * 289.0;
 }
 
-float4 permute(float4 x)
+float4 simplex_noise_grad3d_permute(float4 x)
 {
-    return mod289((x * 34.0 + 1.0) * x);
+    return simplex_noise_grad3d_mod289((x * 34.0 + 1.0) * x);
 }
 
-float4 taylorInvSqrt(float4 r)
+float4 simplex_noise_grad3d_taylorInvSqrt(float4 r)
 {
     return 1.79284291400159 - r * 0.85373472095314;
 }
@@ -62,9 +62,9 @@ float3 snoise_grad(float3 v)
     float3 x3 = x0 - 0.5;
 
     // Permutations
-    i = mod289(i); // Avoid truncation effects in permutation
+    i = simplex_noise_grad3d_mod289(i); // Avoid truncation effects in permutation
     float4 p =
-      permute(permute(permute(i.z + float4(0.0, i1.z, i2.z, 1.0))
+      simplex_noise_grad3d_permute(simplex_noise_grad3d_permute(simplex_noise_grad3d_permute(i.z + float4(0.0, i1.z, i2.z, 1.0))
                             + i.y + float4(0.0, i1.y, i2.y, 1.0))
                             + i.x + float4(0.0, i1.x, i2.x, 1.0));
 
@@ -98,7 +98,7 @@ float3 snoise_grad(float3 v)
     float3 g3 = float3(a1.zw, h.w);
 
     // Normalise gradients
-    float4 norm = taylorInvSqrt(float4(dot(g0, g0), dot(g1, g1), dot(g2, g2), dot(g3, g3)));
+    float4 norm = simplex_noise_grad3d_taylorInvSqrt(float4(dot(g0, g0), dot(g1, g1), dot(g2, g2), dot(g3, g3)));
     g0 *= norm.x;
     g1 *= norm.y;
     g2 *= norm.z;
