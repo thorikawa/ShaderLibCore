@@ -57,7 +57,7 @@ void DistortionUV_float(
 	out float2 distortedUV)
 {
 	float3 uv1 = float3(uv * distortionNoiseScale, _Time.x * timeScale);
-	float3 noise = snoise_grad(uv1 + distortionNoisePosition);
+	float3 noise = simplex_noise_grad3d_snoise_grad(uv1 + distortionNoisePosition);
 
 	distortedUV = getRotationUV(uv, noise.x, noise.y * distortionPower);
 	distortedUV = fukuokaTriangleWave2D(distortedUV);
@@ -74,7 +74,7 @@ void DistortionUVW_float(
 {
 	float3 uv1 = float3(uv * distortionNoiseScale);
 	uv1.z += _Time.x * timeScale;
-	float3 noise = snoise_grad(uv1 + distortionNoisePosition);
+	float3 noise = simplex_noise_grad3d_snoise_grad(uv1 + distortionNoisePosition);
 
 	distortedUVW = getRotationUVW(uv, noise.x, noise.y,
 		noise.z * distortionPower);

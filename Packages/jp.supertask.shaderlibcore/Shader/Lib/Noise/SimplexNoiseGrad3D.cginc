@@ -40,7 +40,7 @@ float4 simplex_noise_grad3d_taylorInvSqrt(float4 r)
     return 1.79284291400159 - r * 0.85373472095314;
 }
 
-float3 snoise_grad(float3 v)
+float3 simplex_noise_grad3d_snoise_grad(float3 v)
 {
     const float2 C = float2(1.0 / 6.0, 1.0 / 3.0);
 
